@@ -1,0 +1,8 @@
+{
+  "name": "DSC8307 Project",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {}
+  },
+  "postCreateCommand": "pip install jupyter notebook pandas numpy scikit-learn matplotlib seaborn nltk spacy joblib streamlit && python -m spacy download en_core_web_sm && python -c \"import nltk; nltk.download('punkt'); nltk.download('stopwords')\""
+}
