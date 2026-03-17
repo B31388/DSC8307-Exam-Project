@@ -1,9 +1,122 @@
-pandas
-numpy
-scikit-learn
-joblib
-matplotlib
-seaborn
-nltk
-wordcloud
-streamlit
+DSC8307: DATA MINING, MODELLING AND ANALYTICS
+Project-Based Examination Report
+Student Name: Mugimba Kakure Jude
+Access Number: B31388
+Program: MSc Data Science and Analytics
+Year: 2
+Semester: 1 (Easter 2026)
+Date: March 2026
+
+1. Introduction and Problem Framing (Part A, Q1)
+Selected Domain: Healthcare – Patient Intelligence
+The analytical problem addressed is the prediction of diabetes onset risk in patients using clinical and demographic data.
+Decision Objective
+To reduce hospital readmissions and long-term complications by identifying high-risk patients early, allowing targeted preventive care like; lifestyle counselling and medication adjustment among others. This objective directly supports better resource allocation and improved patient outcomes in healthcare systems.
+Relevant Variables
+Structured: Pregnancies, Glucose, BloodPressure, SkinThickness, BMI, DiabetesPedigreeFunction, Age (target = Outcome: 0 = No diabetes, 1 = Diabetes based on probabilities, Threshold 0.4).
+Textual: Medical abstracts and patient notes (for sentiment and keyword insights).
+Role of Data-Driven Modelling
+Machine learning models analyze historical patient data to generate risk scores that shift healthcare from reactive to proactive decision-making. These predictions integrate with electronic health records for real-time alerts.
+
+
+2. Dataset Acquisition and Preparation (Part A, Q2 & Q3)
+Dataset
+1.	Structured data: Pima Indians Diabetes dataset (768 rows, 9 columns) acquired directly from the public URL:
+https://raw.githubusercontent.com/jbrownlee/Datasets/master/pima-indians-diabetes.csv
+2.	Textual data: Medical Abstracts TC Corpus (11,550 abstracts) acquired from:
+https://raw.githubusercontent.com/sebischair/Medical-Abstracts-TC-Corpus/main/medical_tc_train.csv
+
+Cleaning and Preparation Steps
+•	Replaced biologically impossible zeros (Glucose, BloodPressure, SkinThickness, Insulin, BMI) with NaN and imputed using median.
+•	Removed outliers using Inter-Quartile Range (IQR) method on all numeric features.
+•	Cleaned dataset saved as Mugimba.csv (reduced to ~450–500 rows after cleaning).
+Post-cleaning verification confirmed no remaining invalid zeros and significantly reduced variance in extreme values.
+
+3. Feature Engineering, Modelling and Prediction (Part B)
+Feature Selection
+Selected the top correlated features based on Pearson correlation with the target:
+Pregnancies, Glucose, BloodPressure, SkinThickness, BMI, DiabetesPedigreeFunction, Age.
+Models Developed
+Two classification algorithms were implemented and compared:
+
+1.	Logistic Regression (tuned)
+2.	Random Forest Classifier
+
+
+Performance Comparison (on 20% hold-out test set):
+
+•	Logistic Regression (best model): Accuracy = 67.16%, F1 Score = 50.00%, Precision = 45.83%, Recall = 55.00%.
+•	Confusion Matrix:
+[[34  13]
+[ 9  11]]
+
+Saved Model
+Best model saved as Mugimba_best_model.pkl using joblib.
+Predictions
+Generated on the hold-out test set and saved as Mugimba_predictions.csv.
+Interpretation of Performance
+The model performs reasonably well given the small dataset and class imbalance (~65% no-diabetes). Main sources of error are class imbalance and noise from the original zero values. In healthcare, false negatives are critical (missed diabetes cases could lead to complications); therefore, the model should be used as a risk-scoring support tool with a lowered decision threshold to prioritise recall.
+4. Text Mining, NLP and Deployment (Part C)
+4.1 Textual Dataset & NLP Analysis
+•	Acquired 11,550 medical abstracts relevant to disease conditions (including metabolic/diabetes-related topics).
+•	Preprocessing: Lowercase conversion, stopword removal, and word tokenisation.
+•	NLP Task: Word frequency analysis (Counter) – extracted meaningful insights on clinical themes.
+•	Top 10 frequent words: patients (22,751), less (5,881), may (4,012), treatment (3,898), study (3,319).
+•	Visualization: Word cloud generated and saved as nlp_wordcloud.png (highlights dominant medical concepts such as “patients”, “treatment”, “blood”, “disease”).
+4.2 Model Reuse
+Loaded Mugimba_best_model.pkl and demonstrated example inferences on sample patient data.
+Deployment Architecture
+Deployed using Streamlit because it is a simple, interactive web framework.
+Architecture: User browser → Streamlit app → loads saved model → processes inputs → returns risk prediction. 
+4.3 User Guidelines and Running Instructions
+GitHub Repository
+The complete project source code, notebooks, data, models, and deployment script are available at:
+https://github.com/B31388/DSC8307-Exam-Project.git
+Requirements
+To run the application locally, install the required Python packages using the provided requirements.txt file:
+Bash: pip install -r requirements.txt
+Required packages:
+•	pandas
+•	numpy
+•	scikit-learn
+•	joblib
+•	matplotlib
+•	seaborn
+•	nltk
+•	wordcloud
+•	streamlit
+How to Run the Application
+Step Wise
+1.	Clone or download the repository
+Bash:
+git clone https://github.com/B31388/DSC8307-Exam-Project.git
+cd DSC8307-Exam-Project
+2.	Install dependencies:
+Bash: 
+pip install -r requirements.txt
+3.	Run the Streamlit app:
+Bash:
+streamlit run deployment/app.py
+The app will automatically open in your default browser at http://localhost:8501.
+User Guidelines
+1.	Open the link above in any modern browser.
+2.	Enter the seven-patient metrics (Pregnancies, Glucose, BloodPressure, SkinThickness, BMI, DiabetesPedigreeFunction, Age) using the sliders/numeric inputs.
+3.	Click the “Predict” button.
+4.	The app instantly displays the predicted risk: “High Risk (Diabetes Likely)” or “Low Risk (No Diabetes)”.
+5.	For clinical use: Treat the output as a risk score only – always confirm with a medical professional.
+
+5.0 Ethical, Privacy and Reliability Considerations
+Ethical: Model trained on Pima Indians data may have ethnic bias; regular retraining on diverse populations is essential.
+Privacy: Patient data is processed in-memory only; no storage occurs.
+Reliability: Monitor for model drift and retrain annually. The system is designed as decision-support, not a replacement for clinical judgment.
+5. Conclusion and Submission Files
+This project successfully implemented a complete data mining and analytics pipeline for diabetes risk prediction in healthcare. The combination of structured modelling, textual NLP insights, and an interactive deployment to demonstrate practical predictive intelligence.
+Files Submitted
+•	Notebooks: PartA.ipynb, PartB.ipynb, PartC.ipynb
+•	Data: Mugimba.csv, Mugimba_predictions.csv, raw_text.csv, nlp_wordcloud.png
+•	Model: Mugimba_best_model.pkl
+•	Deployment: app.py + requirements.txt
+•	Report: This PDF (with running application link)
+Submission Zip Name
+B31388_MSC Data Science and Analytics_Year 2_Data mining Modeling and Analytics.zip
+
